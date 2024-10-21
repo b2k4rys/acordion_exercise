@@ -29,25 +29,33 @@ function Accordion() {
 
   return faqs.map((item) => (
     <AccordionItem
-      text={item.text}
       title={item.title}
       num={faqs.indexOf(item) + 1}
       handleClick={setOpen}
       curOpen={curOpen}
-    />
+    >
+      {item.text}
+    </AccordionItem>
   ));
 }
 
-function AccordionItem({ num, title, text, curOpen, handleClick }) {
+function AccordionItem({ num, title, curOpen, handleClick, children }) {
+  function handleToggle() {
+    if (curOpen === num) {
+      handleClick(null);
+    } else {
+      handleClick(num);
+    }
+  }
   return (
     <div
       className={`item ${curOpen === num ? "open" : ""}`}
-      onClick={() => handleClick(num)}
+      onClick={handleToggle}
     >
       <p className="number">{num < 9 ? `0${num}` : `${num}`}</p>
       <h2>{title}</h2>
       <p className="icon">{curOpen === num ? <>-</> : <>+</>}</p>
-      {curOpen === num ? <div className="content-box">{text}</div> : <></>}
+      {curOpen === num ? <div className="content-box">{children}</div> : <></>}
     </div>
   );
 }
